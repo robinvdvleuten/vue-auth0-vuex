@@ -1,14 +1,14 @@
 require('dotenv').config()
 
-var CopyWebpackPlugin = require('copy-webpack-plugin')
 var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'script.js'
+    publicPath: '/dist/',
+    filename: 'build.js'
   },
   resolveLoader: {
     root: path.join(__dirname, 'node_modules')
@@ -38,9 +38,6 @@ module.exports = {
       'NODE_ENV',
       'AUTH0_CLIENT_ID',
       'AUTH0_DOMAIN'
-    ]),
-    new CopyWebpackPlugin([
-      { from: './index.html' }
     ])
   ],
   devServer: {

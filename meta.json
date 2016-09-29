@@ -1,0 +1,29 @@
+{
+  "schema": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "message": "Project name"
+    },
+    "description": {
+      "type": "string",
+      "required": false,
+      "message": "Project description",
+      "default": "A Vue.js project"
+    },
+    "author": {
+      "type": "string",
+      "message": "Author"
+    },
+    "auth0_client_id": {
+      "type": "string",
+      "required": true,
+      "label": "Auth0 client ID"
+    },
+    "auth0_domain": {
+      "type": "string",
+      "required": true,
+      "label": "Auth0 domain"
+    }
+  }
+}
