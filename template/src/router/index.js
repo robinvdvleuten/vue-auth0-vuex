@@ -6,17 +6,17 @@ import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
-const requiresAnon = (route, redirect, next) => {
+const requireAnon = (to, from, next) => {
   if (store.getters.isAuthenticated) {
-    return redirect({ name: 'index' })
+    return next({ name: 'index' })
   }
 
   next()
 }
 
-const requiresAuth = (route, redirect, next) => {
+const requireAuth = (to, from, next) => {
   if (!store.getters.isAuthenticated || store.getters.isTokenExpired) {
-    return store.dispatch('AUTH0_LOGOUT').then(() => redirect({ name: 'login' }))
+    return store.dispatch('AUTH0_LOGOUT').then(() => next({ name: 'login' }))
   }
 
   next()
@@ -25,10 +25,12 @@ const requiresAuth = (route, redirect, next) => {
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    { path: '/', name: 'index', component: Dashboard, beforeEnter: requiresAuth, children: [
-      { path: 'logout', name: 'logout', beforeEnter: (route, redirect) => { store.dispatch('AUTH0_LOGOUT'); redirect('/login') }}
+    { path: '/', name: 'index', component: Dashboard, beforeEnter: requireAuth, children: [
+      { path: 'logout', name: 'logout', beforeEnter: (to, from, next) => {
+        store.dispatch('AUTH0_LOGOUT').then(() => next({ name: 'login' }))
+      }}
     ]},
-    { path: '/login', name: 'login', component: Login, beforeEnter: requiresAnon },
+    { path: '/login', name: 'login', component: Login, beforeEnter: requireAnon },
   ]
 })
 
