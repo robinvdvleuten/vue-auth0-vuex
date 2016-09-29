@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="error">
-      {{ error.message }}
+      \{{ error.message }}
     </div>
 
     <form @submit.prevent="onLoginSubmit">
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   export default {
     name: 'Login',
     data () {
@@ -40,14 +42,10 @@
         password: null
       }
     },
-    computed: {
-      error () {
-        return this.$store.state.auth0.error
-      },
-      isAuthenticating () {
-        return this.$store.state.auth0.isAuthenticating
-      }
-    },
+    computed: mapState({
+      error: (state) => state.auth0.error,
+      isAuthenticating: (state) => state.auth0.isAuthenticating
+    }),
     methods: {
       onLoginProviderClick (connection) {
         if (this.isAuthenticating) {
