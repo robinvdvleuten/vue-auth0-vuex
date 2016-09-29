@@ -1,5 +1,4 @@
 import auth0 from '../../services/auth0'
-import { getTokenExpirationDate } from '../../utils/jwt'
 
 const state = {
   error: null,

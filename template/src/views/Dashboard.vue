@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span v-if="!profile">Loading your Auth0 profile...</span><span v-else>{{ profile.email }}</span> (<router-link :to="{ name: 'logout' }">logout</router-link>)
+    <span v-if="!profile">Loading your Auth0 profile...</span><span v-else>\{{ profile.email }}</span> (<router-link :to="{ name: 'logout' }">logout</router-link>)
   </div>
 </template>
 
