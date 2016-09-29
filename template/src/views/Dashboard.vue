@@ -13,7 +13,14 @@
       profile: (state) => state.auth0.profile
     }),
     created () {
-      this.$store.dispatch('AUTH0_GET_PROFILE')
+      this.$store.dispatch('AUTH0_GET_PROFILE').catch(err => {
+        if (err.error < 400 || err.error >= 500) {
+          return
+        }
+
+        this.props.logout()
+          .then(() => this.$router.push({ name: 'login' }));
+      })
     }
   }
 </script>
