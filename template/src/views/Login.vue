@@ -54,7 +54,8 @@
 
         this.$store.dispatch('AUTH0_LOGIN', {
           connection,
-          callbackURL: window.location.href
+          callbackURL: window.location.href,
+          scope: 'openid offline_access'
         })
         .catch(() => {})
       },
@@ -67,7 +68,8 @@
           connection: 'Username-Password-Authentication',
           email: this.email,
           password: this.password,
-          sso: false
+          sso: false,
+          scope: 'openid offline_access'
         })
         .then(() => {
           this.$router.push({ name: 'index' })

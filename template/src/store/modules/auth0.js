@@ -4,7 +4,8 @@ const state = {
   error: null,
   idToken: null,
   isAuthenticating: false,
-  profile: null
+  profile: null,
+  refreshToken: null
 }
 
 const mutations = {
@@ -17,8 +18,9 @@ const mutations = {
     state.isAuthenticating = false
   },
 
-  AUTH0_LOGIN_SUCCESS: (state, { idToken }) => {
+  AUTH0_LOGIN_SUCCESS: (state, { idToken, refreshToken }) => {
     state.idToken = idToken
+    state.refreshToken = refreshToken
     state.error = null
     state.isAuthenticating = false
   },
@@ -27,8 +29,8 @@ const mutations = {
     state.idToken = null
   },
 
-  AUTH0_GET_PROFILE_REQUEST: (state) => {
-    // Nothing to do here!
+  AUTH0_REFRESH_TOKEN_SUCCESS: (state, { id_token }) => {
+    state.idToken = id_token
   },
 
   AUTH0_GET_PROFILE_FAILURE: (state, { error }) => {
@@ -43,9 +45,9 @@ const mutations = {
 
 const actions = {
   AUTH0_LOGIN: ({ commit, state }, options) => {
-    commit('AUTH0_LOGIN_REQUEST')
-
     return new Promise((resolve, reject) => {
+      commit('AUTH0_LOGIN_REQUEST')
+
       auth0.login(options, (err, result) => {
         if (err) {
           commit('AUTH0_LOGIN_FAILURE', { error: { error: err.details.error, message: err.details.error_description }})
@@ -77,6 +79,21 @@ const actions = {
 
     commit('AUTH0_LOGIN_SUCCESS', result)
     return Promise.resolve()
+  },
+  AUTH0_REFRESH_TOKEN: ({ commit, state }) => {
+    return new Promise((resolve, reject) => {
+      commit('AUTH0_REFRESH_TOKEN_REQUEST')
+
+      auth0.refreshToken(state.refreshToken, (err, result) => {
+        if (err) {
+          commit('AUTH0_REFRESH_TOKEN_FAILURE', { error: { error: err.details.error, message: err.details.error_description }})
+          return reject(err)
+        }
+
+        commit('AUTH0_REFRESH_TOKEN_SUCCESS', result)
+        resolve()
+      })
+    })
   },
   AUTH0_GET_PROFILE: ({ commit, dispatch, state }) => {
     return new Promise((resolve, reject) => {

@@ -12,7 +12,7 @@ const store = new Store({
   },
   plugins: [
     createPersistedState({
-      paths: ['auth0.idToken'],
+      paths: ['auth0.refreshToken'],
       getState: (key) => Cookies.getJSON(key),
       setState: (key, state) => Cookies.set(key, state, { expires: 3, secure: true })
     })

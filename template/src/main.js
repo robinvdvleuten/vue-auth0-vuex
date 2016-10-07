@@ -6,8 +6,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: (createElement) => (
-    // Render wrapped <router-view> component.
-    createElement('div', { attrs: { id: 'app' }}, [createElement('router-view')])
-  )
+  render: h => h('router-view', { attrs: { id: 'app' }})
 })
